@@ -8,7 +8,7 @@ export const registerUser=async(formData)=>{
         role:"user"
       })
 
-      return data.data
+      return data
     }
     catch(err){
 

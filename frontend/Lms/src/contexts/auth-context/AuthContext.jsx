@@ -11,7 +11,7 @@ export default function AuthProvider({ children }) {
   const handleRegisterUser=async(e)=>{
     e.preventDefault()
     const data=await registerUser(signUpFormData)
-    console.log(data)
+    console.log('g',data)
   }
   return (
     <AuthContext.Provider

@@ -4,39 +4,31 @@ import cors from "cors";
 import { dbConnect } from "./database/dbConnect.js";
 import authRoutes from "./routes/authRoutes/index.js";
 
-dotenv.config(); // Load environment variables
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 8000;
-const MONGO_URI = process.env.MONGO_URI;
 
-// Connect to Database
 dbConnect();
 
-// CORS Configuration
 const corsOptions = {
-  origin: process.env.CLIENT_URL , // Change to process.env.CLIENT_URL if needed
+  origin: process.env.CLIENT_URL,
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
   allowedHeaders: ["Authorization", "Content-Type"],
 };
 
-// Apply CORS Middleware
 app.use(cors(corsOptions));
 
-// Middleware
-app.use(express.json()); // Parse incoming JSON data
+app.use(express.json());
 
-// Routes
 app.use("/auth", authRoutes);
 
-// Global Error Handling Middleware (Fixed)
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ message: err.message });
 });
 
-// Start Server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
