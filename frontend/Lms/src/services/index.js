@@ -16,3 +16,32 @@ export const registerUser=async(formData)=>{
 
     }
 }
+
+export const loginUser=async(formData)=>{
+  try{
+    const data=axiosInstance.post("/auth/login",{
+      ...formData,
+     
+    })
+
+    return data
+  }
+  catch(err){
+
+      console.log(err)
+
+  }
+}
+
+export const checkAuth=async()=>{
+  try{
+    const data=axiosInstance.get("/auth/check-auth")
+
+    return data
+  }
+  catch(err){
+
+      console.log(err)
+
+  }
+}
