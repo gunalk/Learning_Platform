@@ -1,3 +1,4 @@
+import { Loader2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { FormControls } from "./FormControls";
 
@@ -7,8 +8,8 @@ const CommonForm = ({
   formControls = [],
   formData,
   setFormData,
-  isButtonDisabled
-  
+  isButtonDisabled,
+  loading,
 }) => {
   console.log("j", isButtonDisabled);
   return (
@@ -19,7 +20,13 @@ const CommonForm = ({
         setFormData={setFormData}
       />
       <Button className="w-full mt-5" disabled={isButtonDisabled} type="submit">
-        {buttonText || "Submit"}
+        {loading ? (
+          <>
+            <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+          </>
+        ) : (
+          <> {buttonText || "Submit"}</>
+        )}
       </Button>
     </form>
   );

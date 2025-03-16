@@ -22,7 +22,8 @@ const AuthPage = () => {
     signUpFormData,
     setSignUpFormData,
     handleRegisterUser,
-    handleLoginUser
+    handleLoginUser,
+    loading
   } = useContext(AuthContext);
   const handleValueChange = (val) => {
     setActiveTab(val);
@@ -39,13 +40,22 @@ const AuthPage = () => {
     },
   ];
   const checkIsSignInFormIsValid = () => {
-    return signInFormData && signInFormData.userEmail !== "" && signInFormData.password !== "";
+    return (
+      signInFormData &&
+      signInFormData.userEmail !== "" &&
+      signInFormData.password !== ""
+    );
   };
   const checkIsSignUpFormIsValid = () => {
-    return signUpFormData &&  signUpFormData.userName !== "" &&signUpFormData.userEmail !== "" && signUpFormData.password !== "";
+    return (
+      signUpFormData &&
+      signUpFormData.userName !== "" &&
+      signUpFormData.userEmail !== "" &&
+      signUpFormData.password !== ""
+    );
   };
-  console.log(checkIsSignInFormIsValid())
-  
+  console.log(checkIsSignInFormIsValid());
+
   return (
     <div className="flex flex-col min-h-screen">
       <header className="px-4 lg:px-6 h-14 flex items-center border-b">
@@ -86,11 +96,12 @@ const AuthPage = () => {
                   buttonText={"Sign In"}
                   isButtonDisabled={!checkIsSignInFormIsValid()}
                   handleSubmit={handleLoginUser}
+                  loading={loading}
                 />
               </CardContent>
             </Card>
           </TabsContent>
-          
+
           <TabsContent value="signup">
             <Card classname="p-6 space-y-4">
               <CardHeader>
@@ -105,9 +116,9 @@ const AuthPage = () => {
                   formData={signUpFormData}
                   setFormData={setSignUpFormData}
                   buttonText={"Sign Up"}
-                  
                   isButtonDisabled={!checkIsSignUpFormIsValid()}
                   handleSubmit={handleRegisterUser}
+                  loading={loading}
                 />
               </CardContent>
             </Card>

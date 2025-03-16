@@ -32,24 +32,28 @@ export const registerUser = async (req, res) => {
 export const LoginUser = async (req, res) => {
   try {
     const { userEmail, password } = req.body;
-    const existingUser = await user.findOne({ userEmail: userEmail });
 
-    if (!existingUser) {
+    if (!userEmail || !password) {
       return res.status(400).json({
         success: false,
-        message: "Invalid Credentials",
+        message: "Email and password are required.",
       });
     }
 
-    console.log(existingUser);
-    const isPasswordValid = await bcrypt.compare(
-      password,
-      existingUser.password
-    );
+    const existingUser = await user.findOne({ userEmail });
+
+    if (!existingUser || !existingUser.password) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid credentials",
+      });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, existingUser.password);
     if (!isPasswordValid) {
       return res.status(400).json({
         success: false,
-        message: "Invalid password",
+        message: "Invalid credentials",
       });
     }
 
@@ -61,15 +65,13 @@ export const LoginUser = async (req, res) => {
         role: existingUser.role,
       },
       "JWT_SECRET",
-      { expiresIn: "120m" }
+      { expiresIn: "2h" }
     );
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
-      message: "Logged In Successfully",
-      data: {
-        accessToken,
-      },
+      message: "Logged in successfully",
+      data: { accessToken },
       user: {
         _id: existingUser._id,
         userName: existingUser.userName,
@@ -79,7 +81,7 @@ export const LoginUser = async (req, res) => {
     });
   } catch (err) {
     console.error("Login error:", err);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Something went wrong. Please try again later.",
     });
